@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: fact__order_items
+    description: "Detailed information about order in items level granularity"
+    tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: source('raw', 'olist_orders_dataset')
+
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
