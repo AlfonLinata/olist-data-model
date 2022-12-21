@@ -34,12 +34,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   needle:
     fact:
-      dataset: fact
-      +on_schema_change: "sync_all_columns"
-    stg:
-      dataset: stg
+      +schema: fact
       +on_schema_change: "sync_all_columns"
     dim:
-      dataset: dim
+      +schema: dim
       +on_schema_change: "sync_all_columns"
 

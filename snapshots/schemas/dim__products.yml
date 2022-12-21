@@ -1,6 +1,6 @@
 version: 2
 
-models:
+snapshots:
   - name: dim__products
     description: "History information about products using scd2"
     tests:

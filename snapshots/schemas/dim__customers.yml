@@ -1,6 +1,6 @@
 version: 2
 
-models:
+snapshots:
   - name: dim__customers
     description: "History information about customers using scd2"
     tests:
