@@ -8,6 +8,8 @@
     }
 )}}
 
+-- with insert overwrite strategy this table will be duplicated with the same order id,
+-- but different order status
 with olist_orders_dataset as (
 
     select * from {{ source('raw', 'olist_orders_dataset') }}
@@ -117,6 +119,11 @@ final as (
 
     {% if is_incremental() -%}
 
+    -- This filter will only be applied on an incremental run
+    -- These columns is the rough estimate of last_updated_timestamp
+    -- Some status still won't be captured, like canceled.
+    -- To address this problem, we should change the source schema 
+    -- or not using incremental changes run
     where date(greatest(
         coalesce(orders.order_purchase_timestamp, '1900-01-01'), 
         coalesce(orders.order_approved_at, '1900-01-01'), 

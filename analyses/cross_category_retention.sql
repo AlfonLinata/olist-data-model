@@ -15,6 +15,8 @@ check_category as (
     join fact b
         on a.customers.customer_unique_id = b.customers.customer_unique_id
         and a.order_purchase_timestamp > b.order_purchase_timestamp
+
+        -- null category won't be included for the calculation
         and a.product.product_category_name is not null
         and b.product.product_category_name is not null
 

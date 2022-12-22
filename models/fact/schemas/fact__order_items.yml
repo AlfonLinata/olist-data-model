@@ -6,9 +6,32 @@ models:
     tests:
       - dbt_utils.equal_rowcount:
           compare_model: source('raw', 'olist_orders_dataset')
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_id
+            - order_status
 
     columns:
       - name: order_id
         tests:
-          - unique
           - not_null
+      
+      - name: customers.customer_unique_id
+        tests:
+          - not_null
+
+      # This test will create an error because order_id not in olist_order_items_dataset
+      # More information is needed on why this happened especially when the order_status
+      # is invoiced or even shipped
+
+      # - name: items[safe_offset(0)].product.product_id
+      #   tests: 
+      #    - not_null:
+      #        config:
+      #          where: "order_status not in ('unavailable')"
+      
+      - name: order_status
+        tests:
+          - accepted_values:
+              values: ['processing', 'invoiced', 'created', 'unavailable', 'shipped',
+              'canceled', 'approved', 'delivered']
