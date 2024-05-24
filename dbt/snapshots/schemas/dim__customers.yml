@@ -1,0 +1,18 @@
+version: 2
+
+snapshots:
+  - name: dim__customers
+    description: "History information about customers using scd2"
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: source('raw', 'olist_customers_dataset')
+          config:
+              where: "dbt_valid_to is null"
+
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique:
+              config:
+                where: "dbt_valid_to is null"
+          - not_null

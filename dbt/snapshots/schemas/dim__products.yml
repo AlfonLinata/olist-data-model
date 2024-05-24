@@ -1,0 +1,18 @@
+version: 2
+
+snapshots:
+  - name: dim__products
+    description: "History information about products using scd2"
+    data_tests:
+      - dbt_utils.equal_rowcount:
+          compare_model: source('raw', 'olist_products_dataset')
+          config:
+              where: "dbt_valid_to is null"
+
+    columns:
+      - name: product_id
+        data_tests:
+          - unique:
+              config:
+                where: "dbt_valid_to is null"
+          - not_null
